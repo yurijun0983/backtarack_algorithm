@@ -1,0 +1,42 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <unordered_set>
+using namespace std;
+unordered_set<string> st;
+vector<bool> label;
+void dfs(vector<string> s,string tmp,int l) {
+    if(l == s.size()) { 
+        st.insert(tmp);
+        return;
+    }
+    for(int i=0; i<s.size(); i++) {
+        if(!label[i]) {
+            label[i] = true;
+            dfs(s, tmp + s[i],l+1);
+            label[i] = false;
+        }
+    }
+}
+int main(){
+    vector<string> s;
+    string tmp;
+    while(getline(cin, tmp) && !tmp.empty()){
+        s.push_back(tmp);
+    }
+    
+    label.resize(s.size(), false);
+
+    dfs(s,"",0);
+    vector<string> newStr;
+    for(auto a:st){
+        newStr.push_back(a);
+    }
+    string ans=newStr[0];
+    for(int i=1;i<newStr.size();i++){
+        if (newStr[i]<ans) {
+            ans=newStr[i];
+        }
+    }
+    cout<<ans;
+}
